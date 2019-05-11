@@ -2,23 +2,29 @@ FROM debian:stable
 LABEL maintainer="DasChaos <Twitter: @DasChaosAT>"
 
 RUN apt-get update && \
-    apt-get install -y wget unzip
+    apt-get install -y wget
 
-RUN wget --no-cache -O linux.zip https://alt-cdn.s3.nl-ams.scw.cloud/server-beta/linux.zip && \
+RUN wget --no-cache -O altv-server https://alt-cdn.s3.nl-ams.scw.cloud/server/master/x64_linux/altv-server && \
+    wget --no-cache -O libnode.so.64  https://alt-cdn.s3.nl-ams.scw.cloud/alt-node/libnode.so.64 && \
+    wget --no-cache -O vehmodels.bin https://alt-cdn.s3.nl-ams.scw.cloud/server/master/x64_win32/data/vehmodels.bin && \
+    wget --no-cache -O vehmods.bin https://alt-cdn.s3.nl-ams.scw.cloud/server/master/x64_win32/data/vehmods.bin && \
+    wget --no-cache -O libnode-module.so https://alt-cdn.s3.nl-ams.scw.cloud/alt-node/x64_linux/libnode-module.so && \
     mkdir /altv && \
-    unzip -d altv linux.zip && \
-    rm linux.zip
+    mkdir /altv/data && \
+    mkdir /altv/modules && \
+    mv altv-server /altv/ && \
+    mv libnode.so.64 /altv/ && \
+    mv vehmodels.bin /altv/data && \
+    mv vehmods.bin /altv/data && \
+    mv libnode-module.so /altv/modules
 
-RUN apt-get purge -y wget unzip && \
+RUN apt-get purge -y wget && \
     apt-get clean
 
 RUN mkdir /altv-persistend && \
     mkdir /altv-persistend/config && \
     mkdir /altv-persistend/resources && \
     mkdir /altv-persistend/logs && \
-    rm -rf /altv/resources && \
-    rm /altv/server.cfg && \
-    rm /altv/start.sh && \
     ln -s /altv-persistend/config /altv/config && \
     ln -s /altv-persistend/resources /altv/resources && \
     ln -s /altv-persistend/logs /altv/logs
