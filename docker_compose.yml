@@ -1,0 +1,11 @@
+version: "3"
+services:
+  altv:
+    image: altv
+    container_name: altv
+    volumes:
+      - data:/altv-persistend/
+    ports:
+      - "7788:7788"
+volumes:
+  data:
