@@ -1,14 +1,14 @@
-FROM debian:stable
+FROM debian:10
 LABEL maintainer="DasChaos <Twitter: @DasChaosAT>"
 
 RUN apt-get update && \
-    apt-get install -y wget
+    apt-get install -y wget libc-bin
 
-RUN wget --no-cache -O altv-server https://alt-cdn.s3.nl-ams.scw.cloud/server/master/x64_linux/altv-server && \
+RUN wget --no-cache -O altv-server https://alt-cdn.s3.nl-ams.scw.cloud/server/stable/x64_linux/altv-server && \
     wget --no-cache -O libnode.so.64  https://alt-cdn.s3.nl-ams.scw.cloud/alt-node/libnode.so.64 && \
-    wget --no-cache -O vehmodels.bin https://alt-cdn.s3.nl-ams.scw.cloud/server/master/x64_win32/data/vehmodels.bin && \
-    wget --no-cache -O vehmods.bin https://alt-cdn.s3.nl-ams.scw.cloud/server/master/x64_win32/data/vehmods.bin && \
-    wget --no-cache -O libnode-module.so https://alt-cdn.s3.nl-ams.scw.cloud/alt-node/x64_linux/libnode-module.so && \
+    wget --no-cache -O vehmodels.bin https://alt-cdn.s3.nl-ams.scw.cloud/server/stable/x64_linux/data/vehmodels.bin && \
+    wget --no-cache -O vehmods.bin https://alt-cdn.s3.nl-ams.scw.cloud/server/stable/x64_linux/data/vehmods.bin && \
+    wget --no-cache -O libnode-module.so https://alt-cdn.s3.nl-ams.scw.cloud/node-module/stable/x64_linux/libnode-module.so && \
     mkdir /altv && \
     mkdir /altv/data && \
     mkdir /altv/modules && \
