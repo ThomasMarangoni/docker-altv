@@ -29,7 +29,9 @@ RUN mkdir /altv-persistend && \
     ln -s /altv-persistend/resources /altv/resources && \
     ln -s /altv-persistend/logs /altv/logs
 
-EXPOSE 7788
+EXPOSE 7788/tcp
+EXPOSE 7788/udp
+
 VOLUME /altv-persistend/
 
 ADD start_server.sh /altv/start_server.sh
