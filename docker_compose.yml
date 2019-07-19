@@ -7,5 +7,6 @@ services:
       - data:/altv-persistend/
     ports:
       - "7788:7788"
+      - "7788:7788/udp"
 volumes:
   data:
