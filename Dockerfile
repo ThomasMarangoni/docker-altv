@@ -11,7 +11,7 @@ RUN wget --no-cache -O altv-server https://cdn.altv.mp/server/stable/x64_linux/a
     wget --no-cache -O libnode.so.64  https://cdn.altv.mp/alt-node/libnode.so.64 && \
     wget --no-cache -O vehmodels.bin https://cdn.altv.mp/server/stable/x64_linux/data/vehmodels.bin&& \
     wget --no-cache -O vehmods.bin https://cdn.altv.mp/server/stable/x64_linux/data/vehmods.bin && \
-    wget --no-cache -O libnode-module.so https://alt-cdn.s3.nl-ams.scw.cloud/node-module/stable/x64_linux/libnode-module.so && \
+    wget --no-cache -O libnode-module.so https://cdn.altv.mp/node-module/stable/x64_linux/libnode-module.so && \
     mkdir /altv && \
     mkdir /altv/data && \
     mkdir /altv/modules && \
