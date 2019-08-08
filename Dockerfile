@@ -1,6 +1,9 @@
 FROM debian:10
 LABEL maintainer="DasChaos <Twitter: @DasChaosAT>"
 
+ENV PORT 7788
+ENV UID 0
+
 RUN apt-get update && \
     apt-get install -y wget libc-bin
 
@@ -32,8 +35,8 @@ RUN mkdir /altv-persistend && \
     ln -s /altv-persistend/resources-data /altv/resources-data && \
     ln -s /altv-persistend/logs /altv/logs
 
-EXPOSE 7788/tcp
-EXPOSE 7788/udp
+EXPOSE ${PORT}/tcp
+EXPOSE ${PORT}/udp
 
 VOLUME /altv-persistend/
 
@@ -41,7 +44,7 @@ ADD start_server.sh /altv/start_server.sh
 RUN chmod +x /altv/start_server.sh
 RUN chmod +x /altv/altv-server
 
-USER 0
+USER ${UID}
 
 ENTRYPOINT ["/altv/start_server.sh"]
 CMD ["bash"]
