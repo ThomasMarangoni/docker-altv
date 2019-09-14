@@ -20,12 +20,7 @@ RUN mkdir /altv && \
 RUN apt-get purge -y wget && \
     apt-get clean
 
-RUN mkdir /altv-persistend && \
-    mkdir /altv-persistend/config && \
-    mkdir /altv-persistend/resources && \
-    mkdir /altv-persistend/logs && \
-    mkdir /altv-persistend/resources-data && \
-    ln -s /altv-persistend/config /altv/config && \
+RUN ln -s /altv-persistend/config /altv/config && \
     ln -s /altv-persistend/resources /altv/resources && \
     ln -s /altv-persistend/resources-data /altv/resources-data && \
     ln -s /altv-persistend/logs /altv/logs
