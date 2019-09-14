@@ -3,9 +3,12 @@ This is a image to run a server instance from AltV in a Docker Container. It is 
 
 ## Compose-File
 The file "docker_compose.yml" creates the container and volume for you. Following command can be used to run the file:
+```sh
 docker-compose -f docker-compose.yml up
 ```
-docker-compose -f docker_compose.yml up
+or with the short syntax
+```sh
+docker-compose up
 ```
 
 ## Volume
