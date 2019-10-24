@@ -1,51 +1,71 @@
 FROM debian:10
-LABEL maintainer="DasChaos <Twitter: @DasChaosAT>"
+LABEL maintainer="DasChaos <Twitter: @DasChaosAT>, StiviK <info@stivik.de>"
 
+# small fix for debian ci builds
+ARG DEBIAN_FRONTEND=noninteractive
+
+# Environment
 ENV PORT 7788
-ENV UID 0
+ENV USER altv
 
-RUN apt-get update && \
-    apt-get install -y wget libc-bin
+# Install deps
+RUN apt update && \
+    apt install -y wget libc-bin
 
-RUN wget --no-cache -O altv-server https://cdn.altv.mp/server/stable/x64_linux/altv-server && \
-    wget --no-cache -O libnode-module.so https://cdn.altv.mp/node-module/stable/x64_linux/modules/libnode-module.so && \
-    wget --no-cache -O libnode.so.72 https://cdn.altv.mp/node-module/stable/x64_linux/libnode.so.72 && \
-    wget --no-cache -O vehmodels.bin https://cdn.altv.mp/server/stable/x64_linux/data/vehmodels.bin&& \
-    wget --no-cache -O vehmods.bin https://cdn.altv.mp/server/stable/x64_linux/data/vehmods.bin && \
-    mkdir /altv && \
-    mkdir /altv/data && \
-    mkdir /altv/modules && \
-    mkdir /altv/resources-data && \
-    mv altv-server /altv/ && \
-    mv libnode.so.72 /altv/ && \
-    mv vehmodels.bin /altv/data && \
-    mv vehmods.bin /altv/data && \
-    mv libnode-module.so /altv/modules
+# Add altv user
+RUN adduser --disabled-password --gecos "" ${USER} && \
+    mkdir -p /home/${USER}/server
+ENV HOME /home/${USER}/server
+ENV ALTV_TMP /tmp/altvbin
 
-RUN apt-get purge -y wget && \
-    apt-get clean
+# Download binaries
+ARG BRANCH=stable
+RUN mkdir -p ${ALTV_TMP}
+RUN wget -q --no-cache -O ${ALTV_TMP}/altv-server https://cdn.altv.mp/server/${BRANCH}/x64_linux/altv-server && \
+    wget -q --no-cache -O ${ALTV_TMP}/libnode-module.so https://cdn.altv.mp/node-module/${BRANCH}/x64_linux/modules/libnode-module.so && \
+    wget -q --no-cache -O ${ALTV_TMP}/libnode.so.72 https://cdn.altv.mp/node-module/${BRANCH}/x64_linux/libnode.so.72 && \
+    wget -q --no-cache -O ${ALTV_TMP}/vehmodels.bin https://cdn.altv.mp/server/${BRANCH}/x64_linux/data/vehmodels.bin && \
+    wget -q --no-cache -O ${ALTV_TMP}/vehmods.bin https://cdn.altv.mp/server/${BRANCH}/x64_linux/data/vehmods.bin && \
+    wget -q --no-cache -O ${ALTV_TMP}/server.cfg https://cdn.altv.mp/others/server.cfg && \
+    mkdir -p ${HOME}/data && \
+    mkdir -p ${HOME}/modules && \
+    mkdir -p ${HOME}/resources-data && \
+    mkdir -p ${HOME}/config && \
+    mv ${ALTV_TMP}/altv-server ${HOME}/ && \
+    mv ${ALTV_TMP}/libnode.so.72 ${HOME}/ && \
+    mv ${ALTV_TMP}/vehmodels.bin ${HOME}/data && \
+    mv ${ALTV_TMP}/vehmods.bin ${HOME}/data && \
+    mv ${ALTV_TMP}/libnode-module.so ${HOME}/modules && \
+    mv ${ALTV_TMP}/server.cfg ${HOME}/config && \
+    rm -rf ${ALTV_TMP}/
 
-RUN mkdir /altv-persistend && \
-    mkdir /altv-persistend/config && \
-    mkdir /altv-persistend/resources && \
-    mkdir /altv-persistend/logs && \
-    mkdir /altv-persistend/resources-data && \
-    ln -s /altv-persistend/config /altv/config && \
-    ln -s /altv-persistend/resources /altv/resources && \
-    ln -s /altv-persistend/resources-data /altv/resources-data && \
-    ln -s /altv-persistend/logs /altv/logs
+RUN apt purge -y wget && \
+    apt clean && \
+    apt autoremove -y
 
+RUN mkdir -p /var/volumes/altv && \
+    mkdir /var/volumes/altv/config && \
+    mkdir /var/volumes/altv/resources && \
+    mkdir /var/volumes/altv/logs && \
+    mkdir /var/volumes/altv/resources-data && \
+    ln -s /var/volumes/altv/config ${HOME}/config && \
+    ln -s /var/volumes/altv/resources ${HOME}/resources && \
+    ln -s /var/volumes/altv/resources-data ${HOME}/resources-data && \
+    ln -s /var/volumes/altv/logs ${HOME}/logs
+
+# Expose persistend volume
+RUN chown -R ${USER}:${USER} /var/volumes/altv
+VOLUME /var/volumes/altv
+
+# Expose ports and start the Server
+WORKDIR /home/${USER}/server
+ADD ./entrypoint.sh ./entrypoint.sh
 EXPOSE ${PORT}/tcp
 EXPOSE ${PORT}/udp
 
-VOLUME /altv-persistend/
+RUN chown -R ${USER}:${USER} .
+RUN chmod +x altv-server
+RUN chmod +x entrypoint.sh
 
-ADD start_server.sh /altv/start_server.sh
-RUN chmod +x /altv/start_server.sh
-RUN chmod +x /altv/altv-server
-
-USER ${UID}
-
-ENTRYPOINT ["/altv/start_server.sh"]
-CMD ["bash"]
-
+USER ${USER}
+ENTRYPOINT ["/bin/sh", "entrypoint.sh"]

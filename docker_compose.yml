@@ -4,7 +4,7 @@ services:
     image: daschaos/altv:stable
     container_name: altv
     volumes:
-      - data:/altv-persistend/
+      - data:/var/volumes/altv/
     ports:
       - "7788:7788"
       - "7788:7788/udp"
