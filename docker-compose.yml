@@ -1,7 +1,7 @@
 version: "3"
 services:
   altv:
-    image: daschaos/altv:stable
+    image: daschaos/altv:release
     container_name: altv
     volumes:
       - data:/altv-persistend/
