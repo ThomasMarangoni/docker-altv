@@ -1,7 +1,7 @@
 FROM debian:10
 LABEL maintainer="DasChaos(Thomas Marangoni) <Twitter: @DasChaosAT>"
 
-ARG BRANCH=release
+ARG BRANCH=rc
 
 ENV PORT 7788
 ENV UID 0
