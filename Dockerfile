@@ -11,8 +11,9 @@ RUN apt-get update && \
 
 RUN mkdir /altv && \
     mkdir /altv/data && \
-    mkdir /altv/modules && \
     mkdir /altv/resources-data && \
+    mkdir -p /altv/modules/js-module && \
+    
     wget --no-cache -O /altv/altv-server https://cdn.altv.mp/server/${BRANCH}/x64_linux/altv-server && \
     wget --no-cache -O /altv/data/vehmodels.bin https://cdn.altv.mp/server/${BRANCH}/x64_linux/data/vehmodels.bin && \
     wget --no-cache -O /altv/data/vehmods.bin https://cdn.altv.mp/server/${BRANCH}/x64_linux/data/vehmods.bin && \
