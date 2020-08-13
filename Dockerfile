@@ -19,7 +19,7 @@ RUN mkdir /altv && \
     wget --no-cache -O /altv/data/vehmods.bin https://cdn.altv.mp/server/${BRANCH}/x64_linux/data/vehmods.bin && \
     
     wget --no-cache -O /altv/modules/libjs-module.so https://cdn.altv.mp/js-module/${BRANCH}/x64_linux/modules/js-module/libjs-module.so && \
-    wget --no-cache -O /altv/modules/libnode.so https://cdn.altv.mp/js-module/${BRANCH}/x64_linux/modules/js-module/libnode.so
+    wget --no-cache -O /altv/modules/libnode.so.72 https://cdn.altv.mp/js-module/${BRANCH}/x64_linux/modules/js-module/libnode.so.72
 
 RUN apt-get purge -y wget && \
     apt-get clean
