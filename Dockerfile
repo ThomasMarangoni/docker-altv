@@ -25,14 +25,16 @@ RUN apt-get purge -y wget && \
     apt-get clean
 
 RUN mkdir /altv-persistend && \
+    mkdir /altv-persistend/logs && \
     mkdir /altv-persistend/config && \
     mkdir /altv-persistend/resources && \
-    mkdir /altv-persistend/logs && \
+    mkdir /altv-persistend/node_modules && \
     mkdir /altv-persistend/resources-data && \
+    ln -s /altv-persistend/logs /altv/logs && \
     ln -s /altv-persistend/config /altv/config && \
     ln -s /altv-persistend/resources /altv/resources && \
-    ln -s /altv-persistend/resources-data /altv/resources-data && \
-    ln -s /altv-persistend/logs /altv/logs
+    ln -s /altv-persistend/node_modules /altv/node_modules && \
+    ln -s /altv-persistend/resources-data /altv/resources-data
 
 EXPOSE ${PORT}/tcp
 EXPOSE ${PORT}/udp
