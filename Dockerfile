@@ -33,7 +33,6 @@ RUN mkdir /altv-persistend && \
     ln -s /altv-persistend/logs /altv/logs && \
     ln -s /altv-persistend/config /altv/config && \
     ln -s /altv-persistend/resources /altv/resources && \
-    ln -s /altv-persistend/node_modules /altv/node_modules && \
     ln -s /altv-persistend/resources-data /altv/resources-data
 
 EXPOSE ${PORT}/tcp
